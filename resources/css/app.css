@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Tambahkan di akhir file CSS Anda */
+@media (max-width: 767px) {
+    #mobile-cart-link {
+        display: flex !important;
+    }
+    
+    #mobile-cart-nav-link {
+        display: flex !important;
+    }
+}
+
+#cart-nav-link,
+#mobile-cart-link,
+#mobile-cart-nav-link {
+    display: none;
+    align-items: center;
+    cursor: pointer; /* Tambahkan kursor pointer */
+}
+
+/* Styling untuk modal keranjang */
+#cart-modal {
+    z-index: 1001; /* Pastikan di atas elemen lain */
+}
+
+#cart-modal .bg-white {
+    max-height: 90vh;
+    overflow-y: auto;
+}
