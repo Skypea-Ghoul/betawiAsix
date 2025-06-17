@@ -21,14 +21,14 @@
                             <span class="text-xl font-bold text-amber-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                             {{-- LOGIKA KONDISIONAL UNTUK STOK --}}
                             @if($product->stock > 0)
-                                <button class="add-to-cart bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded-full transition duration-300"
+                              <button class="add-to-cart bg-amber-500 hover:bg-amber-600 text-white py-2 px-4 rounded-full transition duration-300"
                                         data-id="{{ $product->id }}"
                                         data-name="{{ $product->name }}"
                                         data-price="{{ $product->price }}"
                                         data-max="{{ $product->stock }}">
                                     + Tambahkan
                                 </button>
-                            @else
+                            @else 
                                 {{-- Jika stok 0, tampilkan tombol "Stock Habis" dan nonaktifkan --}}
                                 <button class="bg-gray-400 text-white py-2 px-4 rounded-full cursor-not-allowed" disabled>
                                     Stock Habis

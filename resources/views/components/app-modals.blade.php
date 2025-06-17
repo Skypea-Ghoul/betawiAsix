@@ -82,7 +82,7 @@
         <p>Jumlah: 8</p>
     </div>
                     </div>
-                @if($hasActivePromo ?? false)
+                  @if($hasActivePromo ?? false)
                     <div id="promo-section" class="mb-4">
                         <label for="promo-code" class="block text-gray-700 font-semibold mb-2">Kode Promo</label>
                             <div class="flex gap-2">
@@ -92,6 +92,7 @@
                         <p id="promo-message" class="text-sm mt-2"></p>
                     </div>
                 @endif
+
                     <div class="border-t pt-2 mt-4">
                         <p class="text-right text-lg font-bold text-gray-800">
                             Total Harga: <span id="summary-total-price">Rp 0</span>
@@ -136,8 +137,9 @@
                     <i class="fas fa-arrow-left mr-2"></i> Kembali ke Keranjang
                 </button>
                 <button id="place-order-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full transition duration-300">
-                    Konfirmasi Pesanan <i class="fas fa-check ml-2"></i>
-                </button>
+	  <span class="spinner" style="visibility: hidden;"></span>
+  <span class="btn-text">Konfirmasi Pesanan</span>              
+  </button>
             </div>
         </div>
     </div>

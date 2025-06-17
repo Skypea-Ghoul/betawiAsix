@@ -44,5 +44,4 @@ Route::get('/auth/google', [CustomAuthController::class, 'redirectToGoogle'])->n
 Route::get('/auth/google/callback', [CustomAuthController::class, 'handleGoogleCallback']);
 
 
-
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -116,19 +116,26 @@ class CustomAuthController extends Controller
 
 public function handleGoogleCallback()
 {
-    $googleUser = Socialite::driver('google')->stateless()->user();
+     try {
+        $googleUser = Socialite::driver('google')->stateless()->user();
 
-    // Cek apakah email Google sudah ada di database
-    $user = \App\Models\User::where('email', $googleUser->getEmail())->first();
+        $user = User::where('email', $googleUser->getEmail())->first();
 
-    if ($user) {
-        // Jika sudah ada, login-kan user
+        if (!$user) {
+            // Jika belum ada, daftarkan otomatis
+            $user = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                // Buat password random karena tidak digunakan untuk login manual
+                'password' => bcrypt(uniqid()), 
+            ]);
+        }
+
         Auth::login($user, true);
-        return redirect('/'); // arahkan ke halaman utama
-    } else {
-        // Jika belum ada, TOLAK login dan arahkan ke register/manual
-        // Bisa juga tampilkan pesan error
-        return redirect('/')->with('error', 'Email Google Anda belum terdaftar. Silakan daftar terlebih dahulu.');
+        return redirect('/')->with('success', 'Login berhasil!');
+        
+    } catch (\Exception $e) {
+        return redirect('/')->with('error', 'Terjadi kesalahan saat login dengan Google: ' . $e->getMessage());
     }
 }
 }

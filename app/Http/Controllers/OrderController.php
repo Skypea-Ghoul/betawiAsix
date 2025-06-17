@@ -67,12 +67,17 @@ class OrderController extends Controller
                 $promo = \App\Models\Promo::where('kode', $request->promo_code)->where('is_active', true)->first();
                 if ($promo) {
                     $order->promo_id = $promo->id;
-                    $potongan = round($order->total_price * ($promo->diskon / 100));
-                    $order->grandtotal = $order->total_price - $potongan;
+                    $potongan = ceil($order->total_price * ($promo->diskon / 100));
+                    $grandtotal = $order->total_price - $potongan;
+
+// Bulatkan ke bawah ke kelipatan 1000
+$grandtotal = floor($grandtotal / 1000) * 1000;
+
+$order->grandtotal = $grandtotal;
                     $promo->is_active = false;
                     $promo->save();
-                }
-            }
+}
+}
             $order->save();
 
             // 5. Simpan bukti pembayaran
@@ -90,7 +95,9 @@ class OrderController extends Controller
                 ]);
             }
 
-            
+            $order->status = 'paid';   // jika kamu punya kolom paid_at
+$order->save();
+
             DB::commit();
             
             event(new OrderCreated($order));

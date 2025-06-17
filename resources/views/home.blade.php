@@ -17,7 +17,7 @@
     <!-- Background Video -->
     <video
         class="absolute inset-0 w-full h-full object-cover z-0"
-        src="{{ asset('video/bg-betawi.mp4') }}"
+        src="{{ asset('video/bg-betawiAsix.mp4') }}"
         autoplay
         loop
         muted
@@ -56,7 +56,7 @@
     <!-- Judul Utama -->
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-800">Tentang UD Betawi Asix</h2>
-      <p class="text-gray-600 mt-2">Nusantara dalam Cita Rasa: Soto Ayam Betawi & Bir Pletok Autentik</p>
+      <p class="text-gray-600 mt-2">Nusantara dalam Cita Rasa: Soto Betawi & Bir Pletok</p>
     </div>
 
     <!-- 1. Profil Perusahaan -->
@@ -64,7 +64,7 @@
   <div class="ml-0 lg:translate-x-3 md:ml-24 md:w-lg mb-8 md:mb-0 md:pr-8 sm:-translate-x-5">
   <img src="image/gedung.png" alt="Profil BetawiAsix" class="rounded-full shadow-lg w-full">
 </div>
-      <div class="md:w-1/2 lg:translate-x-7 sm:-translate-x-5">
+      <div class="md:w-1/2 lg:translate-x-7 sm:-translate-x-5 px-5">
         <h3 class="text-2xl font-bold text-gray-800 mb-4">Profil Singkat Perusahaan</h3>
         <p class="text-gray-600 mb-4">
           Perusahaan yang bergerak di bidang kuliner dan jasa kreatif, dengan fokus utama pada pelestarian budaya Betawi melalui produk makanan, minuman, dan layanan penunjang usaha. UD Betawi Asix menggabungkan semangat tradisional dengan manajemen modern untuk menjangkau pasar yang lebih luas.
@@ -86,33 +86,31 @@
         <div class="slider-slide min-w-full flex flex-col md:flex-row items-center p-6 opacity-100 transition-opacity duration-700">
           <img src="{{ asset('image/soto.jpeg')}}" alt="Soto Ayam Betawi" class="w-full md:w-1/2 h-48 object-cover rounded-lg shadow-md mb-4 md:mb-0 md:mr-6">
           <div class="md:w-1/2">
-            <h4 class="text-xl font-semibold text-amber-600 mb-2">Soto Ayam Betawi Premium</h4>
+            <h4 class="text-xl font-semibold text-amber-600 mb-2">Soto Betawi biasa</h4>
             <p class="text-gray-600 mb-4">
-              Soto kami dibuat dari ayam kampung pilihan, rempah-rempah asli Betawi, dan disajikan dengan emping, kentang, serta irisan seledri. Kuah kuning kental dengan rasa gurih yang otentik, cocok untuk menikmati sarapan atau makan siang.
-            </p>
-            <a href="#" class="inline-block bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">Lihat Detail</a>
-          </div>
+              Nikmat kelezatan Soto Betawi khas dengan kaya cita rasa rempah-rempah pilihan. Potongan daging yang empuk berpadu sempurna dengan kuah santan yang hangat. Rasakan kombinasi gurih dan tekstur renyah dari keripik kulit kentang dalam setiap suapan!
+		</p>          
+</div>
         </div>
         <!-- Slide 2 -->
         <div class="slider-slide min-w-full flex flex-col md:flex-row items-center p-6 opacity-0 transition-opacity duration-700">
           <img src="{{ asset('image/bir pletok.avif')}}" alt="Bir Pletok" class="w-full md:w-1/2 h-48 object-cover rounded-lg shadow-md mb-4 md:mb-0 md:mr-6">
           <div class="md:w-1/2">
-            <h4 class="text-xl font-semibold text-amber-600 mb-2">Bir Pletok Original & Varian Rasa</h4>
+            <h4 class="text-xl font-semibold text-amber-600 mb-2">Bir Pletok</h4>
             <p class="text-gray-600 mb-4">
-              Bir Pletok kami terbuat dari jahe merah, kayu secang, serai, dan cengkeh pilihan. Tersedia varian rasa jahe-kayu manis dan jahe-cengkeh. Nikmati hangat atau dingin untuk sensasi menyegarkan dan petualangan rasa tradisional.
+              Bir Pletok kami terbuat dari jahe merah, kayu secang, serai, dan cengkeh pilihan. Nikmati hangat atau dingin untuk sensasi menyegarkan dan petualangan rasa tradisional.
             </p>
-            <a href="#" class="inline-block bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">Lihat Detail</a>
+       
           </div>
         </div>
         <!-- Slide 3 -->
         <div class="slider-slide min-w-full flex flex-col md:flex-row items-center p-6 opacity-0 transition-opacity duration-700">
           <img src="{{ asset('image/sotoNasi.jpg')}}" alt="soto + nasi" class="w-full md:w-1/2 h-48 object-cover rounded-lg shadow-md mb-4 md:mb-0 md:mr-6">
           <div class="md:w-1/2">
-            <h4 class="text-xl font-semibold text-amber-600 mb-2">Nasi Uduk Betawi Spesial</h4>
+            <h4 class="text-xl font-semibold text-amber-600 mb-2">Soto Betawi Nasi</h4>
             <p class="text-gray-600 mb-4">
-              Nasi uduk gurih khas Betawi, disajikan dengan lauk ayam goreng, telur balado, sambal kacang, dan taburan bawang goreng. Cocok untuk sarapan maupun makan malam bersama keluarga.
+             Soto Betawi lengkap dengan nasi hangat, daging sapi yang lembut, dan kuah gurih khas Betawi yang bikin nagih. Diinovasikan dengan keripik kulit kentang yang renyah menjadi solusi sempurna untuk dimakan kapanpun!
             </p>
-            <a href="#" class="inline-block bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">Lihat Detail</a>
           </div>
         </div>
       </div>
@@ -172,7 +170,8 @@
                      style="background-image: url('{{ asset('image/marketing.jpeg') }}');">
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white rounded-b-xl">
                         <p class="font-bold">Div. Marketing</p>
-                        <p class="text-sm">Sarah Johnson</p>
+                        <p class="text-sm">Adelima Pratiwi</p>
+                        <p class="text-sm">Ahmad Irgan Romadhon Sholeh</p>
                     </div>
                 </div>
                 
@@ -180,7 +179,7 @@
                      style="background-image: url('{{ asset('image/it.jpeg') }}');">
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white rounded-b-xl">
                         <p class="font-bold">Div. IT</p>
-                        <p class="text-sm">M. Rafly Al-Gybran</p> 
+                        <p class="text-sm">Moemar Hamzah Omar Ollie</p> 
                     </div>
                 </div>
                 
@@ -188,7 +187,7 @@
                      style="background-image: url('{{asset('image/mice.jpeg')}}');">
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white rounded-b-xl">
                         <p class="font-bold">Div. MICE</p>
-                        <p class="text-sm">Jennifer Lopez</p>
+                        <p class="text-sm">Moza Putri Meidy</p>
                     </div>
                 </div>
                 
@@ -196,7 +195,7 @@
                      style="background-image: url('{{asset('image/accounting.jpeg')}}');">
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white rounded-b-xl">
                         <p class="font-bold">Div. Accounting</p>
-                        <p class="text-sm">Emily Davis</p>
+                        <p class="text-sm">Aini Maulida</p>
                     </div>
                 </div>
                 
@@ -204,7 +203,7 @@
                      style="background-image: url('{{asset('image/administrasi.jpeg')}}');">
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white rounded-b-xl">
                         <p class="font-bold">Div. Administrasi</p>
-                        <p class="text-sm">Robert Brown</p>
+                        <p class="text-sm">Acha Zhafirah</p>
                     </div>
                 </div>
 
@@ -213,6 +212,9 @@
                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white rounded-b-xl">
                         <p class="font-bold">Pengurus Inti</p>
                         <p class="text-sm">Abitzar Ahmad Farabi</p>
+                        <p class="text-sm">Amanda Maulana</p>
+                        <p class="text-sm">Adhwa Putri Jahra</p>
+
                     </div>
                 </div>
             </div>
@@ -246,6 +248,10 @@
             <li>Mengembangkan layanan profesional berbasis kebutuhan pelanggan.</li>
             <li>Berinovasi dalam promosi dan pengembangan usaha berbasis digital.</li>
         </ul>
+    <p class="font-semibold text-amber-700 mb-1 mt-2">Slogan:</p>
+	 <p class="text-gray-700 mb-3">
+             Bukan sekedar usaha tapi warisan budaya.
+        </p>
     </div>
 </div>
         <!-- Leadership -->
@@ -330,9 +336,17 @@
                     <p class="font-bold text-gray-800">Sekretaris & Bendahara:</p>
                     <p class="text-gray-600">Mengelola administrasi, pendataan, anggaran, dan laporan keuangan</p>
                 </div>
+   <div class="p-4 bg-gradient-to-r from-amber-50 to-white rounded-xl border-l-4 border-amber-500">
+                    <p class="font-bold text-gray-800">Divisi Accounting:</p>
+                    <p class="text-gray-600">Meliputi penyusunan anggaran (RAB), pencatatan transaksi keuangan, analisis profit penjualan, serta penyusunan laporan keuangan beserta Catatan atas Laporan Keuangan (CALK).</p>
+                </div>
                 <div class="p-4 bg-gradient-to-r from-amber-50 to-white rounded-xl border-l-4 border-amber-500">
                     <p class="font-bold text-gray-800">Divisi Marketing:</p>
                     <p class="text-gray-600">Merancang kampanye promosi, mengelola media sosial, dan menjalin relasi dengan mitra</p>
+                </div>
+   <div class="p-4 bg-gradient-to-r from-amber-50 to-white rounded-xl border-l-4 border-amber-500">
+                    <p class="font-bold text-gray-800">Divisi Administrasi:</p>
+                    <p class="text-gray-600">Menyusun korespondensi, membuat buku agenda, dan mengelola arsip</p>
                 </div>
                 <div class="p-4 bg-gradient-to-r from-amber-50 to-white rounded-xl border-l-4 border-amber-500">
                     <p class="font-bold text-gray-800">Divisi IT:</p>
@@ -459,44 +473,33 @@
             </div>
             
             <!-- Media Sosial -->
-            <!-- Media Sosial -->
-<div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 max-w-2xl mx-auto mt-8">
-    <h4 class="text-xl font-bold text-gray-800 mb-6 text-center">Ikuti Media Sosial Kami</h4>
-    <div class="flex justify-center items-center gap-8 text-center">
-        <a href="#" aria-label="Facebook" class="social-icon text-gray-600 hover:text-blue-600 p-3 bg-gray-50 rounded-full hover:bg-blue-50 transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.325v21.351C0 23.405.596 24 1.325 24H12.82v-9.294H9.692v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.464.098 2.797.142v3.24l-1.918.001c-1.504 0-1.795.716-1.795 1.764v2.316h3.59l-.467 3.622h-3.123V24h6.127C23.404 24 24 23.405 24 22.676V1.325C24 .596 23.404 0 22.675 0z" />
-            </svg>
-        </a>
-        <a href="#" aria-label="Twitter" class="social-icon text-gray-600 hover:text-blue-400 p-3 bg-gray-50 rounded-full hover:bg-blue-50 transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 4.557a9.93 9.93 0 01-2.828.775 4.932 4.932 0 002.163-2.724 9.864 9.864 0 01-3.127 1.195 4.916 4.916 0 00-8.381 4.482 13.944 13.944 0 01-10.125-5.135 4.822 4.822 0 00-.664 2.475 4.916 4.916 0 002.188 4.096 4.902 4.902 0 01-2.228-.616c-.054 2.281 1.582 4.415 3.949 4.89a4.935 4.935 0 01-2.224.084 4.918 4.918 0 004.59 3.417A9.868 9.868 0 010 21.54a13.944 13.944 0 007.548 2.212c9.057 0 14.009-7.513 14.009-14.009 0-.213-.005-.425-.014-.636A10.012 10.012 0 0024 4.557z" />
-            </svg>
-        </a>
-        <a href="#" aria-label="Instagram" class="social-icon text-gray-600 hover:text-pink-600 p-3 bg-gray-50 rounded-full hover:bg-pink-50 transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.366.062 2.633.34 3.608 1.315.975.976 1.252 2.243 1.315 3.608.058 1.265.069 1.645.069 4.849s-.012 3.584-.07 4.849c-.062 1.366-.34 2.633-1.315 3.608-.976.975-2.243 1.252-3.608 1.315-1.265.058-1.645.069-4.849.069s-3.584-.012-4.849-.07c-1.366-.062-2.633-.34-3.608-1.315-.975-.976-1.252-2.243-1.315-3.608C2.174 15.747 2.163 15.367 2.163 12s.012-3.584.07-4.849c.062-1.366.34-2.633 1.315-3.608.976-.975 2.243-1.252 3.608-1.315C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.736 0 8.332.014 7.052.072 5.75.13 4.615.445 3.678 1.382 2.741 2.319 2.426 3.454 2.368 4.756c-.058 1.28-.072 1.684-.072 4.95s.014 3.67.072 4.95c.058 1.302.373 2.437 1.31 3.374.937.937 2.072 1.252 3.374 1.31 1.28.058 1.684.072 4.95.072s3.67-.014 4.95-.072c1.302-.058 2.437-.373 3.374-1.31.937-.937 1.252-2.072 1.31-3.374.058-1.28.072-1.684.072-4.95s-.014-3.67-.072-4.95c-.058-1.302-.373-2.437-1.31-3.374-.937-.937-2.072-1.252-3.374-1.31C15.668.014 15.264 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998zm6.406-11.845a1.44 1.44 0 11-2.881 0 1.44 1.44 0 012.881 0z" />
-            </svg>
-        </a>
-        <a href="#" aria-label="LinkedIn" class="social-icon text-gray-600 hover:text-blue-700 p-3 bg-gray-50 rounded-full hover:bg-blue-50 transition">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-        </a>
+ <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 max-w-2xl mx-auto mt-8">
+        <h4 class="text-xl font-bold text-gray-800 mb-6 text-center">Ikuti Media Sosial Kami</h4>
+        <div class="flex justify-center items-center gap-8 text-center">
+            <a href="https://www.tiktok.com/@betawi.anam" aria-label="TikTok" target="_blank" class="social-icon text-gray-600 hover:text-black p-3 bg-gray-50 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-110">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-.88-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                </svg>
+            </a>
+            <a href="https://www.instagram.com/betawiasix" aria-label="Instagram" target="_blank" class="social-icon text-gray-600 hover:text-pink-600 p-3 bg-gray-50 rounded-full hover:bg-pink-50 transition-all duration-300 transform hover:scale-110">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.366.062 2.633.34 3.608 1.315.975.976 1.252 2.243 1.315 3.608.058 1.265.069 1.645.069 4.849s-.012 3.584-.07 4.849c-.062 1.366-.34 2.633-1.315 3.608-.976.975-2.243 1.252-3.608 1.315-1.265.058-1.645.069-4.849.069s-3.584-.012-4.849-.07c-1.366-.062-2.633-.34-3.608-1.315-.975-.976-1.252-2.243-1.315-3.608C2.174 15.747 2.163 15.367 2.163 12s.012-3.584.07-4.849c.062-1.366.34-2.633 1.315-3.608.976-.975 2.243-1.252 3.608-1.315C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.736 0 8.332.014 7.052.072 5.75.13 4.615.445 3.678 1.382 2.741 2.319 2.426 3.454 2.368 4.756c-.058 1.28-.072 1.684-.072 4.95s.014 3.67.072 4.95c.058 1.302.373 2.437 1.31 3.374.937.937 2.072 1.252 3.374 1.31 1.28.058 1.684.072 4.95.072s3.67-.014 4.95-.072c1.302-.058 2.437-.373 3.374-1.31.937-.937 1.252-2.072 1.31-3.374.058-1.28.072-1.684.072-4.95s-.014-3.67-.072-4.95c-.058-1.302-.373-2.437-1.31-3.374-.937-.937-2.072-1.252-3.374-1.31C15.668.014 15.264 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998zm6.406-11.845a1.44 1.44 0 11-2.881 0 1.44 1.44 0 012.881 0z" />
+                </svg>
+            </a>
+        </div>
+        <p class="text-gray-500 text-sm mt-4 leading-relaxed text-center">
+            Dapatkan update terbaru tentang layanan dan promo menarik dari kami
+        </p>
     </div>
-    <p class="text-gray-500 text-sm mt-4 leading-relaxed text-center">
-        Dapatkan update terbaru tentang layanan dan promo menarik dari kami
-    </p>
-</div>
   {{-- </section>
             <section> --}}
             <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md text-center ml-5">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center lg:ml-5 ">
                     <div class="text-amber-500 text-4xl mb-4">
                         <i class="fas fa-award"></i>
                     </div>
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">Bersertifikat Halal</h4>
-                    <p class="text-gray-600">Semua bahan dan proses pengolahan telah mendapatkan sertifikasi halal dari MUI.</p>
+                    <h4 class="text-xl font-bold text-gray-800 mb-2">Terjamin Halal</h4>
+                    <p class="text-gray-600">Semua bahan dipilih dengan cermat dan diolah menggunakan proses yang terjamin mutunya</p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-lg shadow-md text-center">
@@ -507,7 +510,7 @@
                     <p class="text-gray-600">Kami hanya menggunakan bahan-bahan segar dan berkualitas tinggi.</p>
                 </div>
                 
-                <div class="bg-white p-6 rounded-lg shadow-md text-center mr-5">
+                <div class="bg-white p-6 rounded-lg shadow-md text-center lg:mr-5 ">
                     <div class="text-amber-500 text-4xl mb-4">
                         <i class="fas fa-heart"></i>
                     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\YesResource\Widgets;
 
+use Illuminate\Support\Facades\DB;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use App\Models\Order;    // Import model Order Anda
 use App\Models\Product;  // Import model Product Anda
@@ -14,12 +15,15 @@ class TotalProduct extends BaseWidget
     protected static ?string $pollingInterval = '10s';
    protected static ?int $sort = 2;
 
+
 protected function getStats(): array
 {
     $randomNumbers = array_map(fn() => rand(1, 20), array_fill(0, 9, null));
     $randomNumbers1 = array_map(fn() => rand(1, 20), array_fill(0, 9, null));
     $randomNumbers2 = array_map(fn() => rand(1, 20), array_fill(0, 9, null));
     $randomNumbers3 = array_map(fn() => rand(1, 20), array_fill(0, 9, null));
+    $randomNumbers4 = array_map(fn() => rand(1, 20), array_fill(0, 9, null));
+    $randomNumbers5 = array_map(fn() => rand(1, 20), array_fill(0, 9, null));
 
     $startOfDay = Carbon::now()->startOfDay();
     $endOfDay = Carbon::now()->endOfDay();
@@ -29,62 +33,76 @@ protected function getStats(): array
         ->with('items.product')
         ->get();
 
-    $sotoRevenueToday = 0;
-    $sotoProductNames = ['Soto', 'Soto + Nasi'];
-
+    $sotoOnlyRevenueToday = 0;
+    $sotoNasiRevenueToday = 0;
     $birPletokRevenueToday = 0;
-    $birPletokProductName = 'Bir Pletok';
 
-    $totalOverallRevenueToday = 0; // Semua total_price
-    $totalRevenueWithDiscountToday = 0; // Semua grandtotal jika ada, jika tidak pakai total_price
+    $totalOverallRevenueToday = 0;
+    $totalRevenueWithDiscountToday = 0;
 
     foreach ($paidOrdersToday as $order) {
         $totalOverallRevenueToday += $order->total_price;
-        $totalRevenueWithDiscountToday += $order->grandtotal !== null ? $order->grandtotal : $order->total_price;
+        $totalRevenueWithDiscountToday += $order->grandtotal ?? $order->total_price;
 
         foreach ($order->items as $item) {
-            if ($item->product && in_array($item->product->name, $sotoProductNames)) {
-                $sotoRevenueToday += ($item->quantity * $item->product->price);
-            }
-            if ($item->product && $item->product->name === $birPletokProductName) {
-                $birPletokRevenueToday += ($item->quantity * $item->product->price);
+            if (!$item->product) continue;
+
+            $productName = $item->product->name;
+            $lineTotal = $item->quantity * $item->product->price;
+
+            if ($productName === 'Soto') {
+                $sotoOnlyRevenueToday += $lineTotal;
+            } elseif ($productName === 'Soto + Nasi') {
+                $sotoNasiRevenueToday += $lineTotal;
+            } elseif ($productName === 'Bir Pletok') {
+                $birPletokRevenueToday += $lineTotal;
             }
         }
     }
 
     $totalDiscountToday = $totalOverallRevenueToday - $totalRevenueWithDiscountToday;
 
-    $formattedSotoRevenueToday = 'Rp ' . number_format($sotoRevenueToday, 0, ',', '.');
-    $formattedBirPletokRevenueToday = 'Rp ' . number_format($birPletokRevenueToday, 0, ',', '.');
-    $formattedTotalOverallRevenueToday = 'Rp ' . number_format($totalOverallRevenueToday, 0, ',', '.');
-    $formattedTotalRevenueWithDiscountToday = 'Rp ' . number_format($totalRevenueWithDiscountToday, 0, ',', '.');
-    $formattedTotalDiscountToday = 'Rp ' . number_format($totalDiscountToday, 0, ',', '.');
+    // ✅ Tambahkan total dari pesanan pending
+    $pendingTotal = Order::where('status', 'pending')
+        ->whereBetween('created_at', [$startOfDay, $endOfDay])
+        ->sum(DB::raw('COALESCE(grandtotal, total_price)'));
 
     return [
-        Stat::make('Soto & Soto + Nasi', $formattedSotoRevenueToday)
+        Stat::make('Soto', 'Rp ' . number_format($sotoOnlyRevenueToday, 0, ',', '.'))
             ->description('Pendapatan hari ini')
             ->descriptionIcon('heroicon-s-currency-dollar')
             ->color('success')
             ->chart($randomNumbers),
 
-        Stat::make('Bir Pletok', $formattedBirPletokRevenueToday)
+        Stat::make('Soto + Nasi', 'Rp ' . number_format($sotoNasiRevenueToday, 0, ',', '.'))
             ->description('Pendapatan hari ini')
             ->descriptionIcon('heroicon-s-currency-dollar')
             ->color('success')
             ->chart($randomNumbers1),
 
-        Stat::make('Total Keseluruhan', $formattedTotalOverallRevenueToday)
+        Stat::make('Bir Pletok', 'Rp ' . number_format($birPletokRevenueToday, 0, ',', '.'))
+            ->description('Pendapatan hari ini')
+            ->descriptionIcon('heroicon-s-currency-dollar')
+            ->color('success')
+            ->chart($randomNumbers2),
+
+        Stat::make('Total Keseluruhan', 'Rp ' . number_format($totalOverallRevenueToday, 0, ',', '.'))
             ->description('Semua total harga asli hari ini')
             ->descriptionIcon('heroicon-s-currency-dollar')
             ->color('primary')
-            ->chart($randomNumbers2),
+            ->chart($randomNumbers3),
 
-        Stat::make('Total Keseluruhan Dengan Diskon', $formattedTotalRevenueWithDiscountToday)
+        Stat::make('Total Dengan Diskon', 'Rp ' . number_format($totalRevenueWithDiscountToday, 0, ',', '.'))
             ->description('Total setelah diskon')
             ->descriptionIcon('heroicon-s-currency-dollar')
             ->color('violet')
-            ->chart($randomNumbers3),
+            ->chart($randomNumbers4),
 
+        Stat::make('Total Pending', 'Rp ' . number_format($pendingTotal, 0, ',', '.'))
+            ->description('Total pending hari ini')
+            ->descriptionIcon('heroicon-s-clock')
+            ->color('warning')
+            ->chart($randomNumbers5),
     ];
 }
 }

@@ -155,6 +155,26 @@
     transform: scale(0.85) translateY(20px);
     filter: blur(1px);
 }
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 0.5em; /* spasi antara spinner dan teks */
+}
+
+/* definisi animasi */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* class bantu ketika loading: sembunyikan teks span biasa */
+.loading .btn-text { visibility: hidden; }
+.loading .spinner { visibility: visible; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -171,12 +191,10 @@
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
             <!-- Brand -->
-            <div>
-                <h3 class="text-2xl font-bold mb-3 text-amber-400">Betawi Asix</h3>
-                <p class="text-gray-400 leading-relaxed">
-                    Bukan sekedar usaha tapi warisan budaya.
-                </p>
-            </div>
+           
+		  <h3 class="text-2xl font-bold text-amber-400 text-center mx-auto mt-6 lg:mt-14">
+    Betawi Asix
+  </h3>
 
             <!-- Menu -->
             <div>
@@ -184,7 +202,6 @@
                 <ul class="space-y-2">
                     <li><a href="#menu" class="text-gray-300 hover:text-amber-300 transition">Soto Betawi</a></li>
                     <li><a href="#menu" class="text-gray-300 hover:text-amber-300 transition">Soto + Nasi</a></li>
-                    <li><a href="#menu" class="text-gray-300 hover:text-amber-300 transition">Es Krim Bir</a></li>
                     <li><a href="#menu" class="text-gray-300 hover:text-amber-300 transition">Bir Pletok</a></li>
                 </ul>
             </div>
@@ -218,9 +235,8 @@
                     </li>
                 </ul>
                 <div class="flex justify-center space-x-5 mt-2">
-                    <a href="#" class="-mr-[1px] text-gray-300 hover:text-amber-300 text-2xl transition"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-amber-300 text-2xl transition"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-gray-300 hover:text-amber-300 text-2xl transition"><i class="fab fa-whatsapp"></i></a>
+                                        <a href="https://www.tiktok.com/@betawi.anam" target="_blank"  class="text-gray-300 hover:text-amber-300 text-2xl transition"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/betawiasix" target="_blank"  class="text-gray-300 hover:text-amber-300 text-2xl transition"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>

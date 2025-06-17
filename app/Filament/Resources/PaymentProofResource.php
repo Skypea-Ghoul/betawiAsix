@@ -190,6 +190,20 @@ class PaymentProofResource extends Resource
                         'verified' => 'Verified',
                         'rejected' => 'Rejected',
                     ]),
+		 Tables\Filters\Filter::make('verifier_name')
+        ->label('Nama Verifikator')
+        ->form([
+            Forms\Components\TextInput::make('name')
+                ->label('Nama Verifikator')
+                ->placeholder('Masukkan nama'),
+        ])
+        ->query(function (Builder $query, array $data) {
+            return $query->when($data['name'],
+                fn($q, $name) => $q->whereHas('verifier', function ($subQuery) use ($name) {
+                    $subQuery->where('name', 'like', "%{$name}%");
+                })
+            );
+        }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

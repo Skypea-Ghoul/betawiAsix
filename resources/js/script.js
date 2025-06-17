@@ -759,7 +759,7 @@ function updateOrderSummary() {
     let sotoQty = 0, birQty = 0;
     let promoItemsTotal = 0;
     cart.forEach(item => {
-        if (item.name.toLowerCase().includes('soto')) {
+        if (item.name.toLowerCase().includes('soto') && !item.name.toLowerCase().includes('bir')) {
             sotoQty += item.quantity;
             promoItemsTotal += item.price * item.quantity;
         }
@@ -769,7 +769,6 @@ function updateOrderSummary() {
         }
     });
 
-    // Tampilkan atau sembunyikan section promo
     const promoSection = document.getElementById('promo-section');
     if (promoSection) {
         if (sotoQty === 1 && birQty === 1) {
@@ -779,7 +778,7 @@ function updateOrderSummary() {
             appliedPromo = null;
             promoDiscount = 0;
             const promoInput = document.getElementById('promo-code');
-            const promoMsg   = document.getElementById('promo-message');
+            const promoMsg = document.getElementById('promo-message');
             if (promoInput) promoInput.value = '';
             if (promoMsg) promoMsg.textContent = '';
         }
@@ -790,32 +789,34 @@ function updateOrderSummary() {
         total += item.price * item.quantity;
     });
 
-    // Jika promo aktif, hitung potongan global
+    // Hitung potongan global dibulatkan ke bawah ke kelipatan 1000
     let potonganGlobal = 0;
     if (appliedPromo && promoDiscount > 0) {
-        potonganGlobal = Math.round(total * (promoDiscount / 100));
+        let rawDiscount = total * (promoDiscount / 100);
+        potonganGlobal = Math.ceil(rawDiscount / 1000) * 1000;
     }
 
     // Render setiap item
     cart.forEach(item => {
         const isPromoItem = appliedPromo && promoDiscount > 0
-            && (item.name.toLowerCase().includes('soto')
-                || item.name.toLowerCase().includes('bir pletok'));
+            && (item.name.toLowerCase().includes('soto') || item.name.toLowerCase().includes('bir pletok'));
 
         let displayHTML;
         if (isPromoItem) {
-            // Hitung potongan per item secara proporsional
-            const perItemDiscount = Math.round(potonganGlobal * item.price / promoItemsTotal);
-            const hargaSetelahDiskon = item.price - perItemDiscount;
+            const itemTotal = item.price * item.quantity;
+            const proporsi = promoItemsTotal > 0 ? itemTotal / promoItemsTotal : 0;
+            const diskonItem = potonganGlobal * proporsi;
+            const hargaSetelahDiskonItem = itemTotal - diskonItem;
+            const hargaBulat = Math.floor(hargaSetelahDiskonItem / 1000) * 1000;
 
             displayHTML = `
                 <span>${item.name} (${item.quantity}x)</span>
                 <span>
                     <span class="line-through text-gray-400 mr-2">
-                        Rp ${item.price.toLocaleString('id-ID')}
+                        Rp ${(itemTotal).toLocaleString('id-ID')}
                     </span>
                     <span class="text-amber-600 font-bold">
-                        Rp ${hargaSetelahDiskon.toLocaleString('id-ID')}
+                        Rp ${hargaBulat.toLocaleString('id-ID')}
                     </span>
                 </span>
             `;
@@ -830,14 +831,17 @@ function updateOrderSummary() {
         const itemElement = document.createElement('div');
         itemElement.className = 'flex justify-between text-sm summary-item-row';
         itemElement.dataset.productId = item.id;
-        itemElement.dataset.quantity  = item.quantity;
-        itemElement.dataset.price     = item.price;
+        itemElement.dataset.quantity = item.quantity;
+        itemElement.dataset.price = item.price;
         itemElement.innerHTML = displayHTML;
         summaryOrderItemsList.appendChild(itemElement);
     });
 
     // Update elemen total dan grand total
-    const grandtotal = total - potonganGlobal;
+    let grandtotal = total - potonganGlobal;
+    // Bulatkan grandtotal ke bawah ke kelipatan 1000
+    grandtotal = Math.floor(grandtotal / 1000) * 1000;
+
     if (summaryTotalPrice) summaryTotalPrice.textContent = `Rp ${total.toLocaleString('id-ID')}`;
     if (qrisPaymentTotal) qrisPaymentTotal.textContent = `Total: Rp ${grandtotal.toLocaleString('id-ID')}`;
 
@@ -845,15 +849,15 @@ function updateOrderSummary() {
     let grandTotalEl = document.getElementById('grandtotal-summary');
     if (!grandTotalEl) {
         grandTotalEl = document.createElement('p');
-        grandTotalEl.id    = 'grandtotal-summary';
+        grandTotalEl.id = 'grandtotal-summary';
         grandTotalEl.className = 'text-right text-lg font-bold text-amber-600 mt-2';
         summaryOrderItemsList.parentElement.appendChild(grandTotalEl);
     }
     grandTotalEl.innerHTML = `
-        ${potonganGlobal > 0 
+        ${potonganGlobal > 0
             ? `<span class="block text-green-600 text-sm">
-                   Potongan: ${promoDiscount}% (-Rp ${potonganGlobal.toLocaleString('id-ID')})
-               </span>` 
+                    Potongan: ${promoDiscount}% (-Rp ${potonganGlobal.toLocaleString('id-ID')})
+               </span>`
             : ''}
         Grand Total: Rp ${grandtotal.toLocaleString('id-ID')}
     `;
@@ -861,62 +865,83 @@ function updateOrderSummary() {
     updateQrisSection();
 }
 
-
 // Di akhir updateOrderSummary()
- 
+
 function updateQrisSection() {
     const qrisSection = document.getElementById('qris-section');
     if (!qrisSection) return;
 
-    // Promo flag dan harga promo tetap
-    const isPromo = appliedPromo && promoDiscount > 0;
-    const promoSotoPrice = 10200;      // Harga promo Soto
-    const promoBirPrice  = 6800;       // Harga promo Bir Pletok
+    // Fungsi pembulatan ke bawah ke kelipatan 1000
+    function floorToThousand(num) {
+        return Math.floor(num / 1000) * 1000;
+    }
 
-    // Inisialisasi flag dan total
-    let hasSoto = false, hasBir = false;
-    let sotoTotal = 0, birTotal = 0;
+    // 1. Hitung ulang potongan global
+    let potonganGlobal = 0;
+    let promoItemsTotal = 0;
+    const isPromoActive = appliedPromo && promoDiscount > 0;
 
-    // Hitung total sesuai kondisi promo
+    let totalSemuaItem = 0;
     cart.forEach(item => {
-        const name = item.name ? item.name.toLowerCase() : '';
-        // Hitung Soto (termasuk "soto + nasi")
-        if (name.includes('soto')) {
-            hasSoto = true;
-            sotoTotal += (isPromo ? promoSotoPrice : item.price) * item.quantity;
-        }
-        // Hitung Bir Pletok
-        if (name.includes('bir') && name.includes('pletok')) {
-            hasBir = true;
-            birTotal += (isPromo ? promoBirPrice : item.price) * item.quantity;
+        const itemTotal = item.price * item.quantity;
+        totalSemuaItem += itemTotal;
+
+        if (item.name.toLowerCase().includes('soto') ||
+            item.name.toLowerCase().includes('bir pletok')) {
+            promoItemsTotal += itemTotal;
         }
     });
 
-    // Bangun HTML QRIS sesuai item
+    if (isPromoActive) {
+        potonganGlobal = Math.round(totalSemuaItem * (promoDiscount / 100));
+    }
+
+    // 2. Hitung harga setelah diskon per produk
+    let sotoAfterDiscount = 0;
+    let birAfterDiscount = 0;
+
+    cart.forEach(item => {
+        const name = item.name.toLowerCase();
+        const isSoto = name.includes('soto') || name.includes('soto + nasi');
+        const isBir = name.includes('bir pletok');
+
+        if (isSoto || isBir) {
+            const itemTotal = item.price * item.quantity;
+            const proporsi = promoItemsTotal > 0 ? (itemTotal / promoItemsTotal) : 0;
+            const diskonItem = isPromoActive ? (potonganGlobal * proporsi) : 0;
+            const hargaSetelahDiskon = floorToThousand(itemTotal - diskonItem);
+
+            if (isSoto) sotoAfterDiscount += hargaSetelahDiskon;
+            if (isBir) birAfterDiscount += hargaSetelahDiskon;
+        }
+    });
+
+    // 3. Bangun HTML QRIS dengan harga setelah diskon
     let html = '';
-    if (hasSoto) {
+    if (sotoAfterDiscount > 0) {
         html += `
         <div class="qris-item text-center bg-gray-100 p-4 rounded-lg border border-gray-200 mb-4">
             <p class="text-gray-700 mb-3"><b>Scan kode QRIS Soto untuk pembayaran Varian Soto:</b></p>
-            <img src="/image/qris_soto.jpeg" alt="QRIS Soto" class="mx-auto w-52 h-52 object-contain border border-gray-300 rounded-lg">
+            <img src="/image/qris-soto.jpeg" alt="QRIS Soto" class="mx-auto w-52 h-52 object-contain border border-gray-300 rounded-lg">
             <p class="text-sm text-gray-600 mt-2">
-                Total Soto: <span class="font-bold text-amber-600">Rp ${sotoTotal.toLocaleString('id-ID')}</span>
+                Total Soto: <span class="font-bold text-amber-600">Rp ${sotoAfterDiscount.toLocaleString('id-ID')}</span>
             </p>
         </div>
         `;
     }
-    if (hasBir) {
+    if (birAfterDiscount > 0) {
         html += `
         <div class="qris-item text-center bg-gray-100 p-4 rounded-lg border border-gray-200 mb-4">
-            <p class="text-gray-700 mb-3"><b>Scan kode QRIS Bir Pletok untuk pembayaran Varian Bir Pletok:</b></p>
-            <img src="/image/qris_bir.jpeg" alt="QRIS Bir" class="mx-auto w-52 h-52 object-contain border border-gray-300 rounded-lg">
+            <p class="text-gray-700 mb-3"><b>Scan kode QRIS Bir Pletok untuk pembayaran Bir Pletok:</b></p>
+            <img src="/image/qris-bir.jpeg" alt="QRIS Bir" class="mx-auto w-52 h-52 object-contain border border-gray-300 rounded-lg">
+
             <p class="text-sm text-gray-600 mt-2">
-                Total Bir Pletok: <span class="font-bold text-amber-600">Rp ${birTotal.toLocaleString('id-ID')}</span>
+                Total Bir Pletok: <span class="font-bold text-amber-600">Rp ${birAfterDiscount.toLocaleString('id-ID')}</span>
             </p>
         </div>
         `;
     }
-    if (!hasSoto && !hasBir) {
+    if (sotoAfterDiscount === 0 && birAfterDiscount === 0) {
         html = `<div class="text-center text-gray-500">QRIS akan muncul jika Anda memesan Soto atau Bir Pletok.</div>`;
     }
 
@@ -930,8 +955,6 @@ function updateQrisSection() {
         orderBtn.style.display = qrisCount > 0 ? 'inline-block' : 'none';
     }
 }
-
-
 
     // --- Fungsi Modal ---
     function openLoginModal() {
@@ -1094,81 +1117,64 @@ if (mobileNavbarLogoutLink) {
         });
     }
 
+
 if (placeOrderBtn) {
-    placeOrderBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+  placeOrderBtn.addEventListener('click', function(e) {
+    e.preventDefault();
 
-        if (!cart || cart.length === 0) {
-            alert('Keranjang Anda kosong.');
-            return;
-        }
+    // jika sudah loading, batalkan
+    if (placeOrderBtn.classList.contains('loading')) {
+      return;
+    }
 
-        // // Hitung kebutuhan jumlah gambar bukti
-        // let qrisCount = 0;
-        // cart.forEach(item => {
-        //     const name = item.name ? item.name.toLowerCase() : '';
-        //     if (name.includes('soto')) qrisCount++;
-        //     if (name.includes('bir') && name.includes('pletok')) qrisCount++;
-        // });
-        // // Jika user pesan Soto dan Bir Pletok, qrisCount bisa 2 (tapi jika pesan 2 Soto saja, tetap 1)
-        // // Pastikan unik
-        // if (qrisCount > 2) qrisCount = 2;
-        // if (qrisCount === 0) qrisCount = 1; // fallback minimal 1
+    // validasi keranjang, file, dll...
+    if (!cart || cart.length === 0) {
+      alert('Keranjang Anda kosong.');
+      return;
+    }
+    const qrisCount = document.querySelectorAll('#qris-section .qris-item').length;
+    const proofInput = document.querySelector('#order-form input[type="file"][name="proof_files[]"]');
+    const fileCount = proofInput?.files?.length || 0;
+    if (fileCount < qrisCount) {
+      alert(`Anda harus mengupload minimal ${qrisCount} foto bukti pembayaran!`);
+      proofInput.focus();
+      return;
+    }
 
-          const qrisCount = document.querySelectorAll('#qris-section .qris-item').length;
-        // const proofInput = document.getElementById('proof-files-input');
-        // const fileCount = proofInput && proofInput.files ? proofInput.files.length : 0;
+    // **Masuk ke loading state**: tambah class .loading
+    placeOrderBtn.classList.add('loading');
+    placeOrderBtn.disabled = true;
 
-        // if (fileCount < qrisCount) {
-        //     alert(`Anda harus mengupload minimal ${qrisCount} foto bukti pembayaran sesuai jumlah QRIS yang muncul!`);
-        //     proofInput.focus();
-        //     return;
-        // }
+    // siapkan formData
+    const form = document.getElementById('order-form');
+    const formData = new FormData(form);
+    // hapus hidden items dsb...
+    if (document.getElementById('order-items-json')) {
+      document.getElementById('order-items-json').value = '';
+    }
+    cart.forEach((it, idx) => {
+      formData.append(`items[${idx}][product_id]`, it.id);
+      formData.append(`items[${idx}][quantity]`, it.quantity);
+    });
+    if (appliedPromo?.kode) {
+      formData.set('promo_code', appliedPromo.kode);
+    }
 
-        const proofInput = document.querySelector('#order-form input[type="file"][name="proof_files[]"]');
-        const fileCount = proofInput && proofInput.files ? proofInput.files.length : 0;
-
-        if (fileCount < qrisCount) {
-            alert(`Anda harus mengupload minimal ${qrisCount} foto bukti pembayaran sesuai jumlah QRIS yang muncul!`);
-            proofInput.focus();
-            return;
-        }
-
-        // ...lanjutkan proses submit seperti biasa...
-        const form = document.getElementById('order-form');
-        const formData = new FormData(form);
-
-        // Hapus input hidden items agar tidak overwrite
-        if (document.getElementById('order-items-json')) {
-            document.getElementById('order-items-json').value = '';
-        }
-
-        // Tambahkan items sebagai array
-        cart.forEach((it, idx) => {
-            formData.append(`items[${idx}][product_id]`, it.id);
-            formData.append(`items[${idx}][quantity]`, it.quantity);
-        });
-
-        // Tambahkan promo_code jika ada
-        if (appliedPromo && appliedPromo.kode) {
-            formData.set('promo_code', appliedPromo.kode);
-        }
-
-        fetch('/orders', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            },
-            body: formData
-        })
-        .then(res => res.json())
-        .then(async json => {
-            if (!json.success) {
-                alert(json.message || 'Gagal membuat pesanan.');
-                return;
-            }
-            // Reset cart di frontend
-            cart = [];
+    fetch('/orders', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      },
+      body: formData,
+    })
+    .then(res => res.json())
+    .then(async json => {
+      if (!json.success) {
+        alert(json.message || 'Gagal membuat pesanan.');
+        return;
+      }
+      // sukses: reset cart, UI...
+  cart = [];
             saveCart();
             updateCartDisplay();
             updateCartCount();
@@ -1181,13 +1187,20 @@ if (placeOrderBtn) {
             if (paymentViewContainer) paymentViewContainer.classList.add('hidden');
             if (cartModal) cartModal.classList.add('hidden');
             openSuccessModal();
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Gagal melakukan checkout. Coba lagi.');
-        });
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Gagal melakukan checkout. Coba lagi.');
+    })
+    .finally(() => {
+      // **Keluarkan loading state**
+      placeOrderBtn.classList.remove('loading');
+      placeOrderBtn.disabled = false;
     });
+  });
 }
+
+
     if (mobileLoginBtn) {
         mobileLoginBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1405,6 +1418,10 @@ document.getElementById('apply-promo-btn').addEventListener('click', async funct
         msg.className = 'text-red-500 text-sm mt-2';
     }
 });
+
+  setInterval(function () {
+        location.reload();
+    }, 1000000);
 
 })
 
